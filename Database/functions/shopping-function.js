@@ -48,7 +48,7 @@ class shoppingrepository {
         catch(err){
             throw err
         }
-    }
+    }//
     async createneworder(usersid){
         //check transaction for payment Status
         try{
