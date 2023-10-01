@@ -19,6 +19,7 @@ module.exports = (app) => {
             next(err)    
         }  
     });
+    //delete product by id
     app.delete('/product/delete/:id', async(req,res,next) => {
         try {
             const id = req.params.id;
@@ -45,7 +46,7 @@ module.exports = (app) => {
         }
 
     });
-    //get stuff by stuff's id
+    //get product by product's id
     app.get('/product/:id', async(req,res,next) => {
         const productid = req.params.id;
         try {

@@ -8,9 +8,9 @@ class shoppingrepository {
     
     async getorder(userid){
         try{
-            const user = await ((usersmodel.findById(userid)).orders)
-            .populate('items.product');     
-            return order;
+            const user = await order.find({"userid": userid})
+            .populate('items.product')  
+            return user;
         }catch(err){
             throw err;
         }
@@ -63,20 +63,19 @@ class shoppingrepository {
                     const orderid = uuidv4();
                     let orderdate = new Date().toLocaleString();
                     const order = new ordermodel({
-                        usersid,
                         orderid,
                         orderdate,
                         status:'processing',
                         amount,
                         items: cartItems
                     })
-        
+                    order.userid=usersid;
                     profile.cart = [];
-                    
                     order.populate('items.product');
                     const orderResult = await order.save();
                    
                     profile.orders.push(orderResult);
+                    //profile.userid.push(usersid);
                     await profile.save();
                     return orderResult;
                 }
