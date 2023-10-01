@@ -69,8 +69,8 @@ class shoppingrepository {
                         amount,
                         items: cartItems
                     })
-                    order.userid=usersid;
                     profile.cart = [];
+                    order.usersid=usersid;
                     order.populate('items.product');
                     const orderResult = await order.save();
                    
