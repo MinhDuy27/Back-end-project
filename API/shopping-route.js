@@ -40,14 +40,5 @@ module.exports = (app) => {
         }
 
     });
-    //get cart info
-    app.get('/shopping/cart', userauth, async (req,res,next) => {
-        const { _id } = req.user;
-        try {
-            const { data } = await usersservice.getprofile(_id);
-            return res.status(200).json(data.cart);
-        } catch (err) {
-            next(err);
-        }
-    });
+    
 }

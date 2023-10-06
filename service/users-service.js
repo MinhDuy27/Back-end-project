@@ -23,8 +23,30 @@ class usersservice {
                     return formatedata({id: existingusers._id, token });
                 } 
             }
-            return formatedata(null);
+            return null;
         } catch (err) {
+            throw err;
+        }
+    }
+    async changepassword(userinputs){
+
+        const {email,oldpassword,newpassword } = userinputs;
+        
+        try { 
+            const existingusers = await this.repository.findusers({email});
+            if(existingusers)
+            {
+                const validPassword = await validatepassword(oldpassword, existingusers.password, existingusers.salt);
+                if(validPassword)
+                {
+                    let userpassword = await generatepassword(newpassword, existingusers.salt);
+                    const result = await this.repository.changepassword({ email,userpassword});
+                    return formatedata(result);
+                }
+            }
+            return null;    
+        }
+         catch (err) {
             throw err;
         }
     }
@@ -53,6 +75,22 @@ class usersservice {
         }    
     }
 
+    async postnotify(userinput){  
+        try {
+            const {email,infor} = userinput;
+            const existingusers = await this.repository.findusers({email});
+            if(existingusers)
+            {
+                const result = await this.repository.postnotify({email,infor});
+                return formatedata(result);
+            } 
+            return null;     
+        } 
+        catch (err) {
+            throw err;
+        }
+    }
+
     async addnewaddress(_id,userinputs){
         const { country, province, city,street} = userinputs;   
         try {
@@ -62,10 +100,7 @@ class usersservice {
         } catch (err) {
             throw err;
         }
-        
-    
     }
-
     async getprofile(id){
         try {
             const existinguser = await this.repository.findusersbyid({id});
@@ -74,7 +109,6 @@ class usersservice {
             throw err
         }
     }
-
     async addtocart(userid, productid, qty, isRemove){
         try {
             const cartResult = await this.repository.addcartitem(userid, productid, qty, isRemove);        
@@ -83,7 +117,6 @@ class usersservice {
             throw err;
         }
     }
-
     async addorder(userid, order){
         try {
             const orderResult = await this.repository.addordertoprofile(userid, order);

@@ -19,6 +19,12 @@ const usersschema = new Schema({
     ,
     orders: [ 
         { type: Schema.Types.ObjectId, ref: 'order', require: true }
+    ],
+    notification:[
+        {
+            infor: {type: String, require: true},
+            date: {type: String, require: true}
+        }
     ]
 },{
     toJSON: {

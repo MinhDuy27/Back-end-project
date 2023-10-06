@@ -1,6 +1,5 @@
 const { productrepository } = require('../Database');
 const { formatedata } = require('../Database/side-function/side1');
-//const { APIError } = require('../utils/app-errors');
 
 // All Business logic will be here
 class productservice {
@@ -26,7 +25,6 @@ class productservice {
             throw err
         } 
     }
-    
 
     async getproducts(){
         try{
@@ -48,7 +46,6 @@ class productservice {
         } catch (err) {
             throw err;
         }
-
     }
 
     async getselectedproducts(selectedIds){

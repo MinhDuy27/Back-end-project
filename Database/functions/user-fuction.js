@@ -39,6 +39,38 @@ class usersrepository {
     }
   }
 
+  async changepassword({email,userpassword}){
+    try {
+      const profile = await usersmodel.findOne({ email: email });
+      if(profile)
+      {
+        const query = { email: email };
+        const update = { $set: { password: userpassword }};
+        const options = {};
+        const result = await usersmodel.updateOne(query, update, options)
+        return result;
+      }
+      throw new Error("unable to change password");
+    }
+    catch (err) {
+      throw err;
+    }
+  }
+  async postnotify({email,infor}){
+    try {
+      const existingusers = await usersmodel.findOne({ email: email });
+      let notidate = new Date().toLocaleString();
+      const newNotification = {
+        infor: infor,
+        date: notidate
+      };
+      existingusers.notification.push(newNotification);
+      return existingusers;
+    }
+    catch (err) {
+      throw err;
+    }
+  }
   async findusers({ email }) {
     try {
       const existingusers = await usersmodel.findOne({ email: email });
@@ -54,6 +86,7 @@ class usersrepository {
         .populate("address")
         .populate("orders")
         .populate("cart.product");
+      console.log(existingusers);
       return existingusers;
     } catch (err) {
       throw err;
@@ -93,9 +126,7 @@ class usersrepository {
         }
 
         profile.cart = cartItems;
-
         const cartSaveResult = await profile.save();
-       // console.log(cartSaveResult.cart)
         return cartSaveResult.cart;
       }
 

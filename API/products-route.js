@@ -73,7 +73,7 @@ module.exports = (app) => {
             next(err)
         }
     });
-     // add to  user's cart
+     // add product to user's cart
     app.put('/product/cart/add',userauth, async (req,res,next) => {
         const { _id, quantity } = req.body;
         try {   
@@ -89,7 +89,7 @@ module.exports = (app) => {
             next(err)
         }
     });
-    //delete stuff in cart
+    //delete product in cart
     app.delete('/product/cart/delete',userauth, async (req,res,next) => {
         const { _id } = req.body; 
         try {
