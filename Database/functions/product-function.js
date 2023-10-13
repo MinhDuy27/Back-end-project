@@ -9,6 +9,7 @@ class productrepository {
     status,
     specification,
     reasonforsale,
+    productimage
   }) {
     try {
       const product = new productsmodel({
@@ -19,8 +20,9 @@ class productrepository {
         status,
         specification,
         reasonforsale,
+        productimage
       });
-
+     
       const productResult = await product.save();
       return productResult;
     } catch (err) {

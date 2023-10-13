@@ -53,6 +53,7 @@ module.exports = (app) => {
     }
   });
 
+  //receive notification from Admin
   app.post("/users/notification", async (req, res, next) => {
     try {
       const { email,infor } = req.body;
@@ -94,9 +95,41 @@ module.exports = (app) => {
       next(err);
     }
   });
+   // add product to cart
+  app.put('/users/cart/add',userauth, async (req,res,next) => {
+    const { _id, quantity } = req.body; // product's info
+    try {   
+        if(isValidObjectId(_id)){
+            const {data} =  await service.addtocart(req.user._id,_id, quantity, false)//false === add
+            return res.status(200).json(data);
+        }
+        else{
+            return res.status(400).json({message:"invalid id"})
+        }
+       
+    } catch (err) {
+        next(err)
+    }
+  });
+  //delete product in cart
+  app.delete('/users/cart/delete',userauth, async (req,res,next) => {
+    const { _id } = req.body; //_id product
+    try {
+        if(isValidObjectId(_id)){
+            const {data} = await service.addtocart(req.user._id,_id, quantity, true);     // true === remove    
+            return res.status(200).json(data);
+        }
+       else{
+            return res.status(400).json({message:"invalid id"});
+       }
+        
+    } catch (err) {
+        next(err)
+    }
+ });
   //get cart info
   app.get('/users/cart', userauth, async (req,res,next) => {
-    const { _id } = req.user;
+    const { _id } = req.user; // users _id
     try {
         const { data } = await service.getprofile(_id);
         return res.status(200).json(data.cart);
