@@ -1,20 +1,48 @@
 const { isValidObjectId } = require('mongoose');
 const productservice = require('../service/product-service');
-const usersservice = require('../service/users-service');
 const userauth = require('./middlewares/auth')
+const multer = require("multer")
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+      cb(null, './Uploaded-image/');
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.originalname);  
+    }
+  });
 
+  const filefilter = (req, file, cb) => {
+    // reject a file
+    if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+        cb(null, true);
+    } else {
+        cb(null, false);
+        const err = new Error('Only .png, .jpg and .jpeg format allowed!')
+        err.name = 'ExtensionError'
+        return cb(err);
+    }
+  };
+
+  const upload = multer({
+    storage: storage,
+    fileFilter:filefilter
+  }).array('productimage', 4);
 module.exports = (app) => {
     
     const proservice = new productservice();
-    const useservice = new usersservice();
 
     //create product
-    app.post('/product/create', async(req,res,next) => {
+    app.post('/product/create', upload,async(req,res,next) => {
         try {
-            const { name,price,quantity ,type,status,specification,reasonforsale } = req.body; 
-            // validation
-            const { data } =  await proservice.createproduct({ name,price,quantity,type,status,specification,reasonforsale });
-            return res.json(data);
+            const listimage = req.files;
+            const productimage =  new Array();
+            listimage.map(item=>{
+                productimage.push(item.path)
+            })
+            console.log(productimage)
+            const { name,price,quantity ,type,status,specification,reasonforsale} = req.body;
+            const { data } =  await proservice.createproduct({ name,price,quantity,type,status,specification,reasonforsale,productimage});
+             return res.json(data);
         } catch (err) {
             next(err)    
         }  
@@ -44,7 +72,6 @@ module.exports = (app) => {
         } catch (err) {
             next(err)
         }
-
     });
     //get product by product's id
     app.get('/product/:id', async(req,res,next) => {
@@ -60,47 +87,13 @@ module.exports = (app) => {
         } catch (err) {
             next(err)
         }
-
     });
-
     // get the order by id list in cart
-    app.get('/product/ids', async(req,res,next) => {
+    app.get('/product/ids',userauth, async(req,res,next) => {
         try {
             const { ids } = req.body;
             const products = await proservice.getselectedproducts(ids);
             return res.status(200).json(products);
-        } catch (err) {
-            next(err)
-        }
-    });
-     // add product to user's cart
-    app.put('/product/cart/add',userauth, async (req,res,next) => {
-        const { _id, quantity } = req.body;
-        try {   
-            if(isValidObjectId(_id)){
-                const {data} =  await useservice.addtocart(req.user._id,_id, quantity, false)//false === add
-                return res.status(200).json(data);
-            }
-            else{
-                return res.status(400).json({message:"invalid id"})
-            }
-           
-        } catch (err) {
-            next(err)
-        }
-    });
-    //delete product in cart
-    app.delete('/product/cart/delete',userauth, async (req,res,next) => {
-        const { _id } = req.body; 
-        try {
-            if(isValidObjectId(_id)){
-                const {data} = await useservice.addtocart(req.user._id,_id, quantity, true);     // true === remove    
-                return res.status(200).json(data);
-            }
-           else{
-                return res.status(400).json({message:"invalid id"});
-           }
-            
         } catch (err) {
             next(err)
         }

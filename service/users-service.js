@@ -1,7 +1,5 @@
 const { userrepository } = require("../Database");
 const {  generatepassword, formatedata, generatesignature, validatepassword,generatesalt } = require('../Database/side-function/side1');
-//const { APIError, BadRequestError } = require('../utils/app-errors')
-
 
 //logic
 class usersservice {

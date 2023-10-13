@@ -8,6 +8,7 @@ const productschema= mongoose.Schema({
     status: String,
     specification: String,
     reasonforsale: String,
+    productimage: [String]
 }
 ,{
     toJSON: {

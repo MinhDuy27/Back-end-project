@@ -86,7 +86,6 @@ class usersrepository {
         .populate("address")
         .populate("orders")
         .populate("cart.product");
-      console.log(existingusers);
       return existingusers;
     } catch (err) {
       throw err;

@@ -3,7 +3,6 @@ const { formatedata } = require('../Database/side-function/side1');
 
 // All Business logic will be here
 class productservice {
-
     constructor(){
         this.repository = new productrepository();
     }
@@ -16,6 +15,7 @@ class productservice {
             throw err;
         }
     }
+
     async deleteproductbyid(productid){
         try{
             const result = this.repository.deleteproductbyid(productid)
@@ -56,7 +56,7 @@ class productservice {
             throw err;
         }
     }
-
+    
     async getproductbyid(productId){
         try {
             const product = await this.repository.findbyid(productId);
