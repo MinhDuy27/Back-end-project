@@ -1,6 +1,7 @@
 const express = require('express');
 const databaseConnection  = require('./Database/connection');
 const expressApp = require('./init');
+const  errorHandler  = require('./Database/side-function/error-handler');
 
 const StartServer = async() => {
 
@@ -9,6 +10,8 @@ const StartServer = async() => {
     await databaseConnection();
     
     await expressApp(app);
+
+    errorHandler(app);
 
     app.listen(process.env.Port);
 

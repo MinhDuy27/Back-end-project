@@ -3,7 +3,7 @@ const  addressmodel  = require("../models/address");
 
 class usersrepository {
   async createusers({ email,password,name,salt,phone }) {
-    try {
+    
       const users = new usersmodel({
         email,
         password,
@@ -12,14 +12,11 @@ class usersrepository {
         phone,
         address: [],
       });
-      const usersresult = await users.save();
-      return usersresult;
-    } catch (err) {
-      throw err;
-    }
+      return await users.save();
+    
   }
   async createaddress({ _id,country, province, city, street }) {
-    try {
+ 
       const profile = await usersmodel.findById(_id);
 
       if (profile) {
@@ -34,30 +31,16 @@ class usersrepository {
       }
       // save the address if push in
       return await profile.save();
-    } catch (err) {
-      throw err;
-    }
+    
   }
 
   async changepassword({email,userpassword}){
-    try {
-      const profile = await usersmodel.findOne({ email: email });
-      if(profile)
-      {
         const query = { email: email };
         const update = { $set: { password: userpassword }};
         const options = {};
-        const result = await usersmodel.updateOne(query, update, options)
-        return result;
-      }
-      throw new Error("unable to change password");
-    }
-    catch (err) {
-      throw err;
-    }
+        return await usersmodel.updateOne(query, update, options)
   }
   async postnotify({email,infor}){
-    try {
       const existingusers = await usersmodel.findOne({ email: email });
       let notidate = new Date().toLocaleString();
       const newNotification = {
@@ -65,38 +48,22 @@ class usersrepository {
         date: notidate
       };
       existingusers.notification.push(newNotification);
-      return existingusers;
-    }
-    catch (err) {
-      throw err;
-    }
+      return existingusers.save();
   }
-  async findusers({ email }) {
-    try {
-      const existingusers = await usersmodel.findOne({ email: email });
-      return existingusers;
-    } catch (err) {
-      throw err;
-    }
+  async findusers( email ) {
+      return await usersmodel.findOne({ email: email }); 
   }
 
   async findusersbyid({ id }) {
-    try {
       const existingusers = await usersmodel.findById(id)
         .populate("address")
         .populate("orders")
         .populate("cart.product");
       return existingusers;
-    } catch (err) {
-      throw err;
-    }
   }
   
   async addcartitem(usersid, productid, quantity, isRemove) {
-    try {
       const profile = await usersmodel.findById(usersid);
-
-      if (profile) {
         const cartItem = {
           product: productid,
           unit: quantity,
@@ -127,36 +94,19 @@ class usersrepository {
         profile.cart = cartItems;
         const cartSaveResult = await profile.save();
         return cartSaveResult.cart;
-      }
-
-      throw new Error("unable to add to cart");
-    } catch (err) {
-      throw err;
-    }
   }
 
-  async addordertoprofile(customerid, order) {
-    try {
-      const profile = await usersmodel.findById(customerid);
-
-      if (profile) {
-        if (profile.orders == undefined) {
-          profile.orders = [];
-        }
-        profile.orders.push(order);
-
-        profile.cart = [];
-
-        const profileResult = await profile.save();
-
-        return profileResult;
-      }
-
-      throw new Error("Unable to add to order!");
-    } catch (err) {
-      throw err;
-    }
-  }
+//   async addordertoprofile(customerid, order) {
+   
+//       const profile = await usersmodel.findById(customerid);
+//         if (profile.orders == undefined) {
+//           profile.orders = [];
+//         }
+//         profile.orders.push(order);
+//         profile.cart = [];
+//          return await profile.save();
+    
+//   }
 }
 
 module.exports = usersrepository;

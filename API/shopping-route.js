@@ -11,8 +11,8 @@ module.exports = (app) => {
     app.post('/shopping/place/order',userauth, async (req,res,next) => {
         const { _id } = req.user;
         try {
-            const { data } = await shopservice.placeorder({_id});
-            return res.status(200).json(data);
+            const data  = await shopservice.placeorder({_id});
+            return res.json(data);
         } catch (err) {
             next(err)
         }
@@ -22,8 +22,8 @@ module.exports = (app) => {
         const {_id} = req.user;
         const {orderid} = req.body;
         try{
-            const {data} = await shopservice.deleteorders(_id,orderid)
-            return res.status(200).json(data);
+            const data = await shopservice.deleteorders(_id,orderid)
+            return res.json(data);
         }
         catch(err){
             next(err)
@@ -33,8 +33,8 @@ module.exports = (app) => {
     app.get('/shopping/orders',userauth, async (req,res,next) => {
         const { _id } = req.user;
         try {
-            const { data } = await shopservice.getorders(_id);
-            return res.status(200).json(data);
+            const  data  = await shopservice.getorders(_id);
+            return res.json(data);
         } catch (err) {
             next(err);
         }

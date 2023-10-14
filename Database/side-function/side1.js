@@ -38,11 +38,4 @@ module.exports.generatesalt = async () => {
       return false;
     }
   };
-
-  module.exports.formatedata = (data) => {
-    if (data) {
-      return { data };
-    } else {
-      throw new Error("Data Not found!");
-    }
-  };
+  
