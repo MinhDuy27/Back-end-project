@@ -1,1 +1,2 @@
-# Back-end-project
+# Monolithic architecture - project
+
