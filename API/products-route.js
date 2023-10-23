@@ -15,7 +15,6 @@ const storage = multer.diskStorage({
     if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
         cb(null, true);
     } else {
-        cb(null, false);
         const err = new Error('Only .png, .jpg and .jpeg format allowed!')
         err.name = 'ExtensionError'
         return cb(err);
@@ -31,7 +30,7 @@ module.exports = (app) => {
     const proservice = new productservice();
 
     //create product
-    app.post('/product/create', upload,async(req,res,next) => {
+    app.post('/product/create', upload ,async(req,res,next) => {
         try {
             const listimage = req.files;
             const productimage =  new Array();

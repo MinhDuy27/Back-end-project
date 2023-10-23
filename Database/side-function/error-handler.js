@@ -1,5 +1,6 @@
 const Sentry = require('@sentry/node')
-const {ProfilingIntegration} = require('@sentry/profiling-node')
+const {ProfilingIntegration} = require('@sentry/profiling-node');
+const { validationError,internalError,authorizeError,notfoundError } = require('./app-error');
 Sentry.init({
     dsn: 'https://5f70258f9594a4e31dab372c587b95e9@o4506046310252544.ingest.sentry.io/4506046313267200',
     integrations: [
@@ -16,13 +17,17 @@ Sentry.init({
   });
   module.exports = (app)=>{
     app.use((error,req,res,next)=>{
-        Sentry.captureException(error);
-        res.status(error.status || 500);
-        res.json({
-            error:{
-                message: error.message
+      let reportError = true;
+      [validationError,internalError,authorizeError,notfoundError].forEach((typeErorr)=>{
+        if(error instanceof typeErorr)
+          reportError = false
+      })
+      if(reportError == true) Sentry.captureException(error);
+      res.status(error.status || 500);
+      res.json({
+        error:{
+              message: error.message
             }
         })
     });  
-
   }

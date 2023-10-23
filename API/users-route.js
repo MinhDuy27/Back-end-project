@@ -12,8 +12,6 @@ module.exports = (app) => {
     catch(error){
       next(error)
     }
-     
-    
   });
   app.put("/users/changepassword",userauth, async (req, res, next) => {
     try {
