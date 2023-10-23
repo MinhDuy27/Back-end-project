@@ -97,7 +97,7 @@ module.exports = (app) => {
     //get products with price frow low to high
     app.get('/product/ascending/category/:type', async (req,res,next) => {
         try {
-            const {data} = await proservice.getproductinpriceorder(1,req.params.type);        
+            const data = await proservice.getproductinpriceorder(1,req.params.type);        
             return res.status(200).json(data);
         } catch (error) {
             next(error)
@@ -106,7 +106,7 @@ module.exports = (app) => {
     //get products with price frow high to low
     app.get('/product/descending/category/:type', async (req,res,next) => {
         try {
-            const {data} = await proservice.getproductinpriceorder(-1,req.params.type);        
+            const data = await proservice.getproductinpriceorder(-1,req.params.type);        
             return res.status(200).json(data);
         } catch (error) {
             next(error)

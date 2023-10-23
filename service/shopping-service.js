@@ -7,10 +7,10 @@ class shoppingservice {
   }
 
   async placeorder(userinput) {
-    const { _id} = userinput;
+    const { _id,deliveryaddress} = userinput;
     const existinguser = await this.repository.findusersbyid({ id });
     if (!existinguser) throw new notfoundError("user not found by provided id")
-    return await this.repository.createneworder(_id);
+    return await this.repository.createneworder(_id,deliveryaddress);
     
   }
 

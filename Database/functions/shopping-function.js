@@ -31,7 +31,7 @@ class shoppingrepository {
 
         return await profile.save()
     }//
-    async createneworder(usersid) {
+    async createneworder(usersid,deliveryaddress) {
 
         const profile = await usersmodel.findById(usersid).populate("cart.product");
         let amount = 0;
@@ -47,6 +47,7 @@ class shoppingrepository {
                 orderdate,
                 status: 'processing',
                 amount,
+                deliveryaddress: deliveryaddress,
                 items: cartItems
             })
             profile.cart = [];

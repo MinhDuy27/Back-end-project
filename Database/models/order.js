@@ -8,7 +8,7 @@ const orderschema = new Schema({
     orderdate:String,
     status: String,
     amount: Number,
-    deliveryway: String,
+    deliveryaddress: String,
     items: [
         {   
             product: {type: Schema.Types.ObjectId, ref: 'products', required: true} ,

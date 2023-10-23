@@ -13,6 +13,7 @@ module.exports = (app) => {
       next(error)
     }
   });
+  
   app.put("/users/changepassword",userauth, async (req, res, next) => {
     try {
       const { email,oldpassword,newpassword} = req.body;

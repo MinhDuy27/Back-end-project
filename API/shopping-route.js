@@ -8,8 +8,9 @@ module.exports = (app) => {
     //place an order
     app.post('/shopping/place/order',userauth, async (req,res,next) => {
         const { _id } = req.user;
+        const deliveryaddress = req.body;
         try {
-            const data  = await shopservice.placeorder({_id});
+            const data  = await shopservice.placeorder({_id,deliveryaddress});
             return res.json(data);
         } catch (err) {
             next(err)
