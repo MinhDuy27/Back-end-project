@@ -68,7 +68,7 @@ module.exports = (app) => {
   app.get("/users/profile", userauth, async (req, res, next) => {
     try {
       const { _id } = req.user;
-      const  data  = await service.getprofile({ _id });
+      const  data  = await service.getprofile( _id );
       return res.json(data);
     } catch (err) {
       next(err);
@@ -76,20 +76,22 @@ module.exports = (app) => {
   });
    // add product to cart
   app.put('/users/cart/add',userauth, async (req,res,next) => {
-    const { _id, quantity } = req.body; // product's info
+  const { _id } = req.user; 
+  const {productid,quantity}  = req.body;
     try {   
-        const data =  await service.addtocart(req.user._id,_id, quantity, false)//false === add
-        return json(data);
+        const data =  await service.addtocart(_id,productid, quantity, false)//false === add
+        return res.json(data);
     } catch (err) {
         next(err)
     }
   });
   //delete product in cart
   app.delete('/users/cart/delete',userauth, async (req,res,next) => {
-    const { _id } = req.body; // product's info
+    const { _id } = req.user; 
+    const {productid,quantity}  = req.body;
     try {   
-        const data =  await service.addtocart(req.user._id,_id, quantity, true)//true ===remove
-        return json(data);
+        const data =  await service.addtocart(_id,productid, quantity, true)//true ===remove
+        return res.json(data);
     } catch (err) {
         next(err)
     }

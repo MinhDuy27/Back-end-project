@@ -15,6 +15,13 @@ const orderschema = new Schema({
             unit: { type: Number, require: true} 
         }
     ]
+},{
+    toJSON: {
+        transform(doc, ret){
+            delete ret.__v;      
+        }
+    },
+    timestamps: false
 }
 );
 

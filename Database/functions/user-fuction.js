@@ -58,7 +58,10 @@ class usersrepository {
       const existingusers = await usersmodel.findById(id)
         .populate("address")
         .populate("orders")
-        .populate("cart.product");
+        .populate({
+          path: 'cart.product',
+          select: '-quantity'
+        });
       return existingusers;
   }
   

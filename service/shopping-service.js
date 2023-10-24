@@ -1,4 +1,5 @@
-const { shoppingrepository } = require('../Database');
+const { shoppingrepository, userrepository } = require('../Database');
+const { notfoundError } = require("../Database/side-function/app-error");
 
 // All Business logic will be here
 class shoppingservice {
@@ -6,23 +7,15 @@ class shoppingservice {
     this.repository = new shoppingrepository();
   }
 
-  async placeorder(userinput) {
-    const { _id,deliveryaddress} = userinput;
-    const existinguser = await this.repository.findusersbyid({ id });
-    if (!existinguser) throw new notfoundError("user not found by provided id")
-    return await this.repository.createneworder(_id,deliveryaddress);
-    
+  async placeorder(userid,deliveryaddress) {
+    return await this.repository.createneworder(userid,deliveryaddress);
   }
 
   async deleteorders(userid,orderid) {
-    const existinguser = await this.repository.findusersbyid({ id });
-    if (!existinguser) throw new notfoundError("user not found by provided id")
     return await this.repository.deleteorder(userid,orderid);
     
   }
   async getorders(userid) {
-    const existinguser = await this.repository.findusersbyid({ id });
-    if (!existinguser) throw new notfoundError("user not found by provided id")
     return await this.repository.getorder(userid);
     
   }

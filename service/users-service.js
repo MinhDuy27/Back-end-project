@@ -67,16 +67,16 @@ class usersservice {
     }
     async getprofile(id) {
         
-        const existinguser = await this.repository.findusersbyid({ id });
+        const existinguser = await this.repository.findusersbyid({ id});
         if (!existinguser) throw new notfoundError("user not found by provided id")
         return existinguser;
         
     }
-    async addtocart(userid, productid, qty, isRemove) {
-             const existinguser = await this.repository.findusersbyid({ id });
-             if (!existinguser) throw new notfoundError("user not found by provided id")
-            return  await this.repository.addcartitem(userid, productid, qty, isRemove);
-    }
+    async addtocart(id, productid, qty, isRemove) {
+        const existinguser = await this.repository.findusersbyid({ id });
+        if (!existinguser) throw new notfoundError("user not found by provided id")
+        return  await this.repository.addcartitem(userid, productid, qty, isRemove);
+}
     // async addorder(userid, order) {
     //     const existinguser = await this.repository.findusersbyid({ userid });
     //     if (!existinguser) throw new notfoundError("user not found by provided id")
