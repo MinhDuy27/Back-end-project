@@ -6,7 +6,7 @@ module.exports = async (app) => {
 
     app.use(express.json()); // handle json request
     app.use(express.urlencoded({ extended:false})); // handle form data request 
-    app.use(cors());
+    app.use(cors());// handle cors request
     app.use(morgan("dev"));
     app.use('/Uploaded-image',express.static('Uploaded-image'))
     //api

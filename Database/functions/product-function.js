@@ -24,7 +24,6 @@ class productrepository {
      
       return  await product.save();
   }
-
   async getproducts() {
       return await productsmodel.find();
   }

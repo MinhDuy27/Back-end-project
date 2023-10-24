@@ -56,7 +56,6 @@ class shoppingrepository {
             const orderResult = await order.save();
 
             profile.orders.push(orderResult);
-            //profile.userid.push(usersid);
             await profile.save();
             return orderResult;
         }
