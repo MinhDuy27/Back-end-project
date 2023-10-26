@@ -85,10 +85,11 @@ module.exports = (app) => {
             next(error)
         }
     });
-   //get the list of all products
-    app.get('/product', async (req,res,next) => {
+    //get 20 product in collection each time
+    app.get('/product/collection/:value', async (req,res,next) => {
         try {
-            const data = await proservice.getproducts();        
+            const value = req.params.value;
+            const data = await proservice.getproducts(value);        
             return res.status(200).json(data);
         } catch (error) {
             next(error)

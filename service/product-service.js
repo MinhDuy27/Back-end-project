@@ -23,8 +23,8 @@ class productservice {
         throw new validationError("invalid ID")
     }
 
-    async getproducts() {
-        const products = await this.repository.getproducts();
+    async getproducts(value) {
+        const products = await this.repository.getproducts(value);
         let categories = {};
         products.map(({ type }) => {
             categories[type] = type;
