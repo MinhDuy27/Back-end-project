@@ -35,16 +35,15 @@ class usersservice {
     async signup(userinputs) {
 
         const { email, password, name, phone } = userinputs;
-        const existingusers = await this.repository.findusers({ email });
+        const existingusers = await this.repository.findusers( email );
         if (existingusers)
             throw new validationError("email was created")
-
         // create salt
         let salt = await generatesalt();
 
         let userPassword = await generatepassword(password, salt);
 
-        const existinguser = await this.repository.createusers({ email, password: userPassword, name, salt, phone });
+        const existinguser = await this.repository.createusers({ email, userPassword, name, salt, phone });
 
         // const token = await generatesignature({ email: email, _id: existinguser._id});
 

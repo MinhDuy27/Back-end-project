@@ -51,7 +51,8 @@ class usersrepository {
       return existingusers.save();
   }
   async findusers( email ) {
-      return await usersmodel.findOne({ email: email }); 
+      let result = await usersmodel.findOne({ email: email }); 
+      return result;
   }
 
   async findusersbyid({ id }) {
@@ -99,17 +100,7 @@ class usersrepository {
         return cartSaveResult.cart;
   }
 
-//   async addordertoprofile(customerid, order) {
-   
-//       const profile = await usersmodel.findById(customerid);
-//         if (profile.orders == undefined) {
-//           profile.orders = [];
-//         }
-//         profile.orders.push(order);
-//         profile.cart = [];
-//          return await profile.save();
-    
-//   }
+
 }
 
 module.exports = usersrepository;

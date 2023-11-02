@@ -7,7 +7,7 @@ module.exports = (app) => {
     try{
       const { email, password,name, phone } = req.body;
       const   mydata   = await service.signup({ email, password, name, phone });
-     return  res.josn(mydata)
+     return  res.json(mydata)
     }
     catch(error){
       next(error)
