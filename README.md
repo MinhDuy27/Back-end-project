@@ -1,2 +1,2 @@
-# Monolithic architecture - project
+# Monolithic commercial-app
 
